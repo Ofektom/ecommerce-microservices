@@ -1,4 +1,4 @@
-package com.ofektom.ecommerce.order;
+package com.ofektom.ecommerce.payment;
 
 public enum PaymentMethod {
     PAYPAL,
