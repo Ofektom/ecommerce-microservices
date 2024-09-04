@@ -1,12 +1,16 @@
 spring:
   data:
     mongodb:
-      username: ofektom
-      password: Of3ktom!
-      host: localhost
-      port: 27017
-      database: customer
-      authentication-database: admin
+      uri: mongodb+srv://ofektom:Of3ktom!@cluster0.hbrwv.mongodb.net/customer?retryWrites=true&w=majority
+
+#      username: ofektom
+#      password: Of3ktom!
+#      host: localhost
+#      port: 27017
+#      database: customer
+#      authentication-database: admin
+
 
 server:
   port: 8090
+
