@@ -1,30 +1,32 @@
+server:
+  port: 8040
 spring:
-  data:
-    mongodb:
-      uri: mongodb+srv://ofektom:Of3ktom!@cluster0.hbrwv.mongodb.net/customer?retryWrites=true&w=majority
-
-      #      username: ofektom
-      #      password: Of3ktom!
-      #      host: localhost
-      #      port: 27017
-      #      database: customer
-      #      authentication-database: admin
   kafka:
-    producer:
+    consumer:
       bootstrap-servers: localhost:9092
-      group-id: paymentGroup, orderGroup
+      group-id: paymentGroup,orderGroup
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
-        spring.json.type.mapping: orderConfirmation:com.ofektom.ecommerce.kafka.OrderConfirmation,paymentConfirmation:com.ofektom.ecommerce.notification.PaymentNotificationRequest
+        spring.json.type.mapping: orderConfirmation:com.ofektom.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.ofektom.ecommerce.kafka.payment.PaymentConfirmation
+      specific:
+        error.deserializer:
+          key.delegate: org.apache.kafka.common.serialization.StringDeserializer
+          value.delegate: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring:
+          json:
+            trusted.packages: '*'
+
+    listener:
+      ack-mode: manual
 
   mail:
     host: localhost
     port: 1025
     username: ofektom
-    password: ofektom
+    password: Of3ktom!
     properties:
       mail:
         smtp:
@@ -36,5 +38,12 @@ spring:
         timeout: 3000
         writetimeout: 5000
 
-server:
-  port: 8040
+  data:
+    mongodb:
+      uri: mongodb+srv://ofektom:Of3ktom!@cluster0.hbrwv.mongodb.net/notification?retryWrites=true&w=majority
+  #      username: ofektom
+  #      password: Of3ktom!
+  #      host: localhost
+  #      port: 27017
+  #      database: notification
+  #      authentication-database: admin

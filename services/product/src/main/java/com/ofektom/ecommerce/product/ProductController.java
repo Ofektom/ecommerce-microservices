@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 public class ProductController {
-    private ProductService service;
+    private final ProductService service;
 
     @PostMapping
     public ResponseEntity<Integer> createProduct(

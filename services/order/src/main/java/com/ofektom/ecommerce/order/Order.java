@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.AuditingBeanDefinitionParser;
 
 import java.math.BigDecimal;
@@ -21,11 +22,11 @@ import static jakarta.persistence.EnumType.STRING;
 @Data
 @Builder
 @Entity
-@EntityListeners(AuditingBeanDefinitionParser.class)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "customer_order")
 public class Order {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String reference;
     private BigDecimal totalAmount;
