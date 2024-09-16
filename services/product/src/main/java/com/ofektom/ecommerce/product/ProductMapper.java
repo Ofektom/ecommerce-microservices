@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductMapper {
 
-    public Product toProduct(ProductRequest request) {
+    public Product toProduct(ProductRequest request, Category category) {
         return Product.builder()
                 .id(request.id())
                 .name(request.name())
                 .description(request.description())
                 .availableQuantity(request.availableQuantity())
                 .price(request.price())
-                .category(Category.builder().id(request.id()).build())
+                .category(category)
                 .build();
     }
 

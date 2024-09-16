@@ -3,3 +3,24 @@ spring:
     import: optional:configserver:http://localhost:8888
   application:
     name: customer-service
+#
+#keycloak:
+#  realm: micro-services
+#  auth-server-url: http://localhost:9098/auth/
+#  resource: customer-service
+#  credentials:
+#    secret: {your-customer-client-secret}
+#  bearer-only: true
+#  security-constraints:
+#    - authRoles:
+#        - ROLE_CUSTOMER
+#      securityCollections:
+#        - patterns: ["/api/v1/customers/**"]
+#          roles: ["ROLE_CUSTOMER"]
+#
+## Additional configurations for Keycloak adapter
+#keycloak.security:
+#  enable-basic-auth: true
+#  use-resource-role-mappings: true
+#  principal-attribute: preferred_username
+#  cors: true

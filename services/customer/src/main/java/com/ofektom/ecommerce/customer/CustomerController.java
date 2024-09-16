@@ -14,14 +14,14 @@ public class CustomerController {
 
     private final CustomerService service;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<String> createCustomer(
             @RequestBody @Valid CustomerRequest request
     ){
         return ResponseEntity.ok(service.createCustomer(request));
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<Void> updateCustomer(
             @RequestBody @Valid CustomerRequest request
     ){
@@ -29,7 +29,7 @@ public class CustomerController {
         return ResponseEntity.accepted().build();
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<CustomerResponse>> getCustomers(){
         return ResponseEntity.ok(service.getCustomers());
     }
@@ -44,7 +44,12 @@ public class CustomerController {
         return ResponseEntity.ok(service.getCustomerById(customerId));
     }
 
-    @DeleteMapping("/{customer-id}")
+    @GetMapping("/exists/{email}")
+    public ResponseEntity<Boolean> existsByEmail(@PathVariable("email") String email){
+        return ResponseEntity.ok(service.existsByEmail(email));
+    }
+
+    @DeleteMapping("/delete/{customer-id}")
     public ResponseEntity<Void> delete(@PathVariable("customer-id") String customerId){
         service.deleteCustomer(customerId);
         return ResponseEntity.accepted().build();

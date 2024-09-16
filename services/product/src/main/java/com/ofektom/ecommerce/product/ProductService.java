@@ -1,5 +1,7 @@
 package com.ofektom.ecommerce.product;
 
+import com.ofektom.ecommerce.category.Category;
+import com.ofektom.ecommerce.category.CategoryRepository;
 import com.ofektom.ecommerce.exception.ProductPurchaseException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +17,13 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository repository;
     private final ProductMapper mapper;
+    private final CategoryRepository categoryRepository;
 
     public Integer createProduct(ProductRequest request) {
-        var product = mapper.toProduct(request);
+        Category category = categoryRepository.findById(request.categoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+        var product = mapper.toProduct(request, category);
         return repository.save(product).getId();
     }
 

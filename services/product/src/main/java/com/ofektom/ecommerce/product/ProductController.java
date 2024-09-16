@@ -13,7 +13,7 @@ import java.util.List;
 public class ProductController {
     private final ProductService service;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Integer> createProduct(
             @RequestBody @Valid ProductRequest request
     ){
@@ -34,7 +34,7 @@ public class ProductController {
         return ResponseEntity.ok(service.findById(productId));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ProductResponse>> findAll(){
         return ResponseEntity.ok(service.findAll());
     }

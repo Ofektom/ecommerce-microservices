@@ -14,16 +14,21 @@ import java.util.List;
 public class OrderController {
     private final OrderService service;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Integer> createOrder(
             @RequestBody @Valid OrderRequest request
             ){
         return ResponseEntity.ok(service.createOrder(request));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<OrderResponse>> findAll(){
         return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/customer/[customer-id]")
+    public ResponseEntity<List<OrderResponse>> ordersByCustomerId(@PathVariable("customer-id") String customerId){
+        return ResponseEntity.ok(service.findOrdersByCustomerId(customerId));
     }
 
     @GetMapping("/{order-id}")

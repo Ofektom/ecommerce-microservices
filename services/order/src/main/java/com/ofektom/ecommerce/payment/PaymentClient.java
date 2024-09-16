@@ -1,15 +1,32 @@
 package com.ofektom.ecommerce.payment;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(
-        name = "product-service",
-        url = "${application.config.payment-url}"
-)
-public interface PaymentClient {
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.client.RestTemplate;
 
-    @PostMapping
-    Integer requestOrderPayment(@RequestBody PaymentRequest request);
+@RequiredArgsConstructor
+@Service
+public class PaymentClient {
+
+    private final RestTemplate restTemplate;
+    @Value("${application.config.payment-url}")
+    private String paymentUrl;
+
+    public Integer requestOrderPayment(PaymentRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<PaymentRequest> entity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<Integer> response = restTemplate.exchange(paymentUrl, HttpMethod.POST, entity, Integer.class);
+
+        return response.getBody();
+    }
 }

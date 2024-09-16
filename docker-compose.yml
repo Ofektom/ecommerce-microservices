@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   postgres:
     container_name: ms_pg_sql
@@ -39,10 +38,9 @@ services:
       - mongo:/data
     environment:
       MONGO_INITDB_ROOT_USERNAME: ofektom
-      MONGO_INITDB_ROOT_PASSWORD: ofektom
+      MONGO_INITDB_ROOT_PASSWORD: Of3ktom!
     networks:
       - microservices-net
-
 
 
   mongo-express:
@@ -108,12 +106,20 @@ services:
 
   keycloak:
     container_name: keycloak-ms
-    image: quay.io/keycloak/keycloak:24.0.2
+    image: quay.io/keycloak/keycloak:25.0.4
     ports:
       - 9098:8080
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      DB_VENDOR: postgres
+      DB_ADDR: localhost
+      DB_DATABASE: keycloak
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/micro-services-realm.json
+    volumes:
+      - ${HOME}/docker_volumes/keycloak:/opt/keycloak/data
     networks:
       - microservices-net
     command:

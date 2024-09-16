@@ -4,16 +4,15 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: "http://localhost:9098/realms/micro-services"
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
       routes:
-        - id: vendor-service
-          uri: lb:http://VENDOR-SERVICE
-          predicates:
-            - Path=/api/v1/vendors/**
         - id: customer-service
           uri: lb:http://CUSTOMER-SERVICE
           predicates:
@@ -30,14 +29,35 @@ spring:
           uri: lb:http://PRODUCT-SERVICE
           predicates:
             - Path=/api/v1/products/**
-        - id: customer-service
-          uri: lb:http://CUSTOMER-SERVICE
-          predicates:
-            - Path=/api/v1/customers/**
         - id: payment-service
           uri: lb:http://PAYMENT-SERVICE
           predicates:
             - Path=/api/v1/payments/**
 
+
+jwt:
+  auth:
+    converter:
+      resource-id: gateway-service
+      principal-attribute: username
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+application:
+  config:
+    customer-url: http://localhost:8090/api/v1/customers
+
 server:
   port: 8222
+
+#app:
+#  keycloak:
+#    login:
+#      url: http://localhost:9098/realms/micro-services/protocol/openid-connect/token
+#    grant-type: password
+#    client-id: gateway-service
+#    client-secret: kfueNNOgyYe7k0ZFK8xuWKkNwuvFXW6J

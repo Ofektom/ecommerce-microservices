@@ -7,11 +7,9 @@ import com.ofektom.ecommerce.kafka.OrderProducer;
 import com.ofektom.ecommerce.orderline.OrderLineRequest;
 import com.ofektom.ecommerce.orderline.OrderLineService;
 import com.ofektom.ecommerce.payment.PaymentClient;
-import com.ofektom.ecommerce.payment.PaymentClientt;
 import com.ofektom.ecommerce.payment.PaymentRequest;
 import com.ofektom.ecommerce.product.ProductClient;
 import com.ofektom.ecommerce.product.PurchaseRequest;
-import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,7 @@ public class OrderService {
     private final OrderMapper mapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
-    private final PaymentClientt paymentClient;
+    private final PaymentClient paymentClient;
 
     public Integer createOrder(OrderRequest request) {
         var customer = this.customerClient.findCustomerById(request.customerId())
@@ -87,5 +85,12 @@ public class OrderService {
         return repository.findById(orderId)
                 .map(mapper::fromOrder)
                 .orElseThrow(() -> new EntityNotFoundException(format("No order found with the ID:: " + orderId)));
+    }
+
+    public List<OrderResponse> findOrdersByCustomerId(String customerId) {
+        return repository.findOrdersByCustomerId(customerId)
+                .stream()
+                .map(mapper::fromOrder)
+                .collect(Collectors.toList());
     }
 }

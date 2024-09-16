@@ -1,6 +1,6 @@
 package com.ofektom.ecommerce.customer;
 
-import com.ofektom.ecommerce.exception.CustomerNotFoundException;
+import com.ofektom.ecommerce.exception.CustomerException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -17,13 +17,17 @@ public class CustomerService {
     private final CustomerMapper mapper;
 
     public String createCustomer(CustomerRequest request) {
+        if (existsByEmail(request.email())) {
+            var customer = repository.findByEmail(request.email());
+            return customer.getId();
+        }
         var customer = repository.save(mapper.toCustomer(request));
         return customer.getId();
     }
 
     public void updateCustomer(CustomerRequest request) {
-        var customer = repository.findById(request.id()).orElseThrow(() -> new CustomerNotFoundException(
-                format("Cannot update customer:: No customer found with the provided ID:: %s", request.id())
+        var customer = repository.findById(request.id()).orElseThrow(() -> new CustomerException(
+                format("Cannot update customer:: No user found with the provided ID:: %s", request.id())
         ));
         mergeCustomer(customer, request);
         repository.save(customer);
@@ -58,10 +62,15 @@ public class CustomerService {
     public CustomerResponse getCustomerById(String customerId) {
         return repository.findById(customerId)
                 .map(mapper::fromCustomer)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer with ID " + customerId + " not found"));
+                .orElseThrow(() -> new CustomerException("Customer with ID " + customerId + " not found"));
     }
 
     public void deleteCustomer(String customerId) {
         repository.deleteById(customerId);
+    }
+
+
+    public Boolean existsByEmail(String email) {
+        return repository.existsByEmail(email);
     }
 }
