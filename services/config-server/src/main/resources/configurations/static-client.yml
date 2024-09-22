@@ -1,0 +1,40 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: gateway-service
+            client-secret: kfueNNOgyYe7k0ZFK8xuWKkNwuvFXW6J
+            scope: openid+profile+email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9098/realms/micro-services
+
+
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          keycloak:
+#            client-id: gateway-service
+#            client-secret: kfueNNOgyYe7k0ZFK8xuWKkNwuvFXW6J
+#            provider: keycloak
+#            authorization-grant-type: authorization_code
+#            redirect-uri: http://localhost:9098/login/oauth2/code/keycloak
+#            scope:
+#              - openid
+#              - profile
+#              - email
+#        provider:
+#          keycloak:
+#            authorization-uri: http://localhost:9098/realms/micro-services/protocol/openid-connect/auth
+#            token-uri: http://localhost:9098/realms/micro-services/protocol/openid-connect/token
+#            user-info-uri: http://localhost:9098/realms/micro-services/protocol/openid-connect/userinfo
+#            jwk-set-uri: http://localhost:9098/realms/micro-services/protocol/openid-connect/certs
+#            issuer-uri: http://localhost:9098/realms/micro-services
+
+
+server:
+  port: 8005

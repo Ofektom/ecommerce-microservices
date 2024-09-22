@@ -67,4 +67,8 @@ public class ProductService {
                 .map(mapper::toProductResponse)
                 .collect(Collectors.toList());
     }
+
+    public Boolean existsById(Integer productId) {
+        return repository.existsById(productId);
+    }
 }

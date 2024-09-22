@@ -33,6 +33,18 @@ spring:
           uri: lb:http://PAYMENT-SERVICE
           predicates:
             - Path=/api/v1/payments/**
+        - id: rating-service
+          uri: lb:http://RATING-SERVICE
+          predicates:
+            - Path=/api/v1/ratings/**
+        - id: recommender-service
+          uri: lb:http://RECOMMENDER-SERVICE
+          predicates:
+            - Path=/api/v1/recommenders/**
+        - id: static-client
+          uri: lb:http://STATIC-CLIENT
+          predicates:
+            - Path=/**
 
 
 jwt:

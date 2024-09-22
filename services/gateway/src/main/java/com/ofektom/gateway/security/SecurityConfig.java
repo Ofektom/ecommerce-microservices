@@ -19,7 +19,7 @@ public class SecurityConfig {
         serverHttpSecurity
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/eureka/**", "/api/v1/customers/create").permitAll()
+                        .pathMatchers("/", "/eureka/**", "/api/v1/customers/create").permitAll()
                         .pathMatchers("/api/v1/products/create").hasAnyRole("ADMIN")
                         .pathMatchers("/api/v1/products/all").hasAnyRole("CUSTOMER", "ADMIN")
                         .pathMatchers("/api/v1/products/{product-id}").hasAnyRole("CUSTOMER", "ADMIN")
@@ -31,8 +31,10 @@ public class SecurityConfig {
                         .pathMatchers("/api/v1/orders/{order-id}").hasAnyRole("CUSTOMER", "ADMIN")
                         .pathMatchers("/api/v1/orders/customer/{customer-id}").hasAnyRole("CUSTOMER", "ADMIN")
                         .pathMatchers("/api/v1/orders/all").hasRole("ADMIN")
-                        .pathMatchers("/api/v1/payments/all").hasRole("ADMIN")
+                        .pathMatchers("/api/v1/payments/all", "/api/v1/ratings/all").hasRole("ADMIN")
                         .pathMatchers("/api/v1/order-lines/**").hasAnyRole("CUSTOMER", "ADMIN")
+                        .pathMatchers("/api/v1/ratings/add", "/api/v1/recommenders/recommendation").hasRole("CUSTOMER")
+                        .pathMatchers("/api/v1/ratings/product/{productId}", "api/v1/ratings/product/{productId}/average").hasRole("ADMIN")
                         .anyExchange().authenticated())
 //                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
                 .oauth2ResourceServer(oauth2 -> oauth2

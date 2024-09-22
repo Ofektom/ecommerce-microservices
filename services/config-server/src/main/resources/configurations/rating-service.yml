@@ -1,0 +1,19 @@
+spring:
+  data:
+    mongodb:
+      username: ofektom
+      password: Of3ktom!
+      host: localhost
+      port: 27017
+      database: rating
+      authentication-database: admin
+
+
+
+server:
+  port: 7080
+
+application:
+  config:
+    customer-url: http://localhost:8222/api/v1/customers
+    product-url: http://localhost:8222/api/v1/products
